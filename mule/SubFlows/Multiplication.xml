@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="MultiplicationFlow" doc:id="23d15434-5312-47de-a25b-573f29689603" >
+		<set-variable value="#[payload.num1]" doc:name="Number 1" doc:id="5db02906-97ea-4707-9c66-f7ab101f9cf0" variableName="num1"/>
+		<set-variable value="#[payload.num2]" doc:name="Number 2" doc:id="0b82f67d-746a-4392-aac9-1e9d89111f80" variableName="num2"/>
+		<ee:transform doc:name="Transform Message" doc:id="740375f6-f250-4436-bd93-c36980f5424a" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"Multiplication" : vars.num1 * vars.num2
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

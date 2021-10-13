@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="SubtractionFlow" doc:id="c8e37221-4bf8-460d-98bc-a999515f607d" >
+		<set-variable value="#[payload.num1]" doc:name="Number 1" doc:id="4ff6d94f-9aeb-4848-8d20-0b8f1d8ea7bd" variableName="num1"/>
+		<set-variable value="#[payload.num2]" doc:name="Number 2" doc:id="41322903-b617-4259-a96d-426ce3a74d1c" variableName="num2"/>
+		<ee:transform doc:name="Transform Message" doc:id="b408bfd1-d49e-41bb-aec2-e5c1992cbdf2" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"Subtraction" : vars.num2 - vars.num1 
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

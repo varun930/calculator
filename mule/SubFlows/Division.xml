@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="DivisionFlow" doc:id="4d8eab80-6ea4-454b-93ba-528a3025cc08" >
+		<set-variable value="#[payload.num1]" doc:name="Number 1" doc:id="8d42cfb5-5e67-4b58-9102-350d3f616239" variableName="num1"/>
+		<set-variable value="#[payload.num2]" doc:name="Number 2" doc:id="22b33202-ca6e-4c83-b360-21adc46decb8" variableName="num2"/>
+		<ee:transform doc:name="Transform Message" doc:id="76a1130c-e902-4620-bf4b-973163ed36a6" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"Division" : vars.num1 / vars.num2
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

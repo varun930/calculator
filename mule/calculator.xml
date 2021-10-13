@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="72bf83ee-2228-462b-84f6-f6fb3dfede88" >
+		<http:listener-connection host="localhost" port="8086" />
+	</http:listener-config>
+	<flow name="calculatorFlow" doc:id="e8804afd-5b98-4161-9e12-98e8f66c51ea" >
+		<http:listener doc:name="Listener" doc:id="6c4f3b44-7eed-4075-a497-e84bbbafd57b" config-ref="HTTP_Listener_config" path="/cal">
+			<http:response statusCode="#[vars.response default 200]" />
+		</http:listener>
+		<set-variable value="201" doc:name="Response" doc:id="9a9788e3-600c-4ba9-b3cc-6cba4135af17" variableName="response"/>
+		<choice doc:name="Choice" doc:id="646c2d5e-d163-45b1-9bd8-d95ebfe71121" >
+			<when expression='#[attributes.queryParams.operation == "Addition"]'>
+				<flow-ref doc:name="Addition" doc:id="f491aff9-b3c9-421f-9e1d-e0c1a93b9c0b" name="AdditionFlow"/>
+				<ee:transform doc:name="Transform Message" doc:id="1047c770-775d-4221-8a12-91394f3e4eec" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</when>
+			<when expression='#[attributes.queryParams.operation == "Subtraction"]'>
+				<flow-ref doc:name="Subtraction" doc:id="0175a9c0-c65d-416a-843d-fe3e5aa64c0d" name="SubtractionFlow"/>
+				<ee:transform doc:name="Transform Message" doc:id="77a837a7-8a4d-4176-a951-7075bf1ad097" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</when>
+			<when expression='#[attributes.queryParams.operation == "Multiplication"]'>
+				<flow-ref doc:name="Multiplication" doc:id="372d5380-0995-45e7-9528-4cd3a5169037" name="MultiplicationFlow"/>
+				<ee:transform doc:name="Transform Message" doc:id="1c6d0fab-8eec-48c4-843f-a9c2ec954f71" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</when>
+			<otherwise >
+				<flow-ref doc:name="Division" doc:id="b5d4aaeb-b681-4de1-92f5-6e9dd85d86c3" name="DivisionFlow"/>
+				<ee:transform doc:name="Transform Message" doc:id="85573d43-1970-4eb3-bd73-173ead97cc63" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</otherwise>
+		</choice>
+	</flow>
+</mule>
